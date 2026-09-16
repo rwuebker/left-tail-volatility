@@ -45,3 +45,13 @@ The repository contains directories for source code, tests, scripts, notebooks, 
 The initial snapshot contains 8,463 SPY returns, with 6,779 through 2019 for fitting and 1,684 later observations reserved. VIX3M begins on 2009-09-18. Missingness is checked against supplied source rows and observed SPY dates, not an independent exchange-session calendar. The archived raw inputs are required to reproduce identical estimates; later vendor downloads can be revised.
 
 Part 1 remains open until we have worked through and reviewed the notebook together.
+
+## Open the guided notebook
+
+JupyterLab is included in the locked development dependencies. From the repository root, after activating `.venv`, run:
+
+```sh
+python -m jupyterlab notebooks/01_garch_foundations.ipynb
+```
+
+Opening the notebook starts its kernel but does not execute cells. Work through them individually.
