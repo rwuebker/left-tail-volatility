@@ -18,3 +18,8 @@
 - **Result:** Opening draft written with primary documentation links; later sections remain explicitly unfinished.
 - **Interpretation:** No empirical claims or model winners. The reader should discover the questions with us.
 - **Next step:** Review the voice; add the actual data audit and model evidence as Part 1 progresses.
+
+## Article voice revision
+
+- **Change:** Revised the opening to sound conversational and exploratory, following the author's feedback. Removed declarations about the research philosophy and reduced rhetorical questions.
+- **Result:** Sections 1–8 retain their definitions and sources; no empirical claims added.

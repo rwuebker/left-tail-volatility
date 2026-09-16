@@ -1,83 +1,71 @@
 # Predicting the Left Tail:
 ## Can GARCH and Machine Learning Warn Us About Downside Risk?
 
-*An evolving research notebook in article form. We are starting the investigation; the results are still ahead of us.*
+*Working draft. Experiments are still to come.*
 
 ### 1. What are we trying to predict?
 
-A market rises 4% in a day. Another day, it falls 4%.
+I've been wondering how much a volatility forecast tells us about the downside. A 4% rally and a 4% drop contribute equally to a squared-return measure, but I'd be more concerned about one of them if I were holding the market.
 
-Both are big moves. If we own the market, they feel very different.
+Could we forecast just the negative movement?
 
-That difference is where this project begins. When we say the market is becoming more volatile, what are we actually learning about the possibility of losses?
-
-And can we learn anything useful before those losses arrive?
-
-We will study SPY, an exchange-traded fund that tracks the S&P 500. Our question is deliberately narrow: **can information available today help predict the size of negative price movements over the next five trading days?**
-
-Five days gives us a concrete place to start: roughly one trading week. Whether that is a useful horizon is itself something to investigate.
+We'll explore that using SPY, an exchange-traded fund that tracks the S&P 500. We'll start with the next five trading days—roughly a week—and see whether today's information helps explain how much prices fall during that window.
 
 ### 2. Why volatility is not always bad
 
-Volatility describes how widely returns vary. It does not, by itself, tell us their direction.
+Volatility describes how widely returns vary. It includes movement in both directions.
 
-One way to measure movement over a period is to square each daily return and add the results. Positive and negative moves both contribute. A large rally can therefore add just as much as a large decline.
+For this project, we'll measure total movement by adding up squared daily returns. Squaring makes larger moves count more, and gives equal weight to a rise or fall of the same size.
 
-For someone holding the market, that raises a question: how much of the movement in this measure is the kind we are worried about?
+I'm curious whether separating the negative days makes the result any easier to predict.
 
 ### 3. Why downside volatility matters
 
-We will build a second measure that keeps only the negative days. Take each negative daily return, square it, and add those values over the next five trading days. Positive days contribute zero.
+Our downside measure keeps only those negative days: square each negative return and add the values over the next five trading days. Positive days contribute zero.
 
-This is our **downside realized variance**. “Realized” means we calculate it from what actually happened. Variance uses squared-return units; taking its square root gives a volatility measure.
+That's **downside realized variance**. “Realized” means measured from returns that actually occurred. Variance is in squared-return units; its square root gives a volatility measure.
 
-The target starts tomorrow. Today's return can help make the prediction, but it cannot be part of the future outcome we claim to predict.
+A rebound won't cancel an earlier decline in this calculation, so it measures something different from the week's net loss. Small declines count too; we're not limiting it to crashes.
 
-This measure is not the week's total loss. A recovery does not cancel an earlier decline inside it. Nor is it a crash probability: even small negative days count. We are asking about the size of negative movements first.
-
-Would weeks that look risky beforehand actually contain more of that movement?
+We'll use information through today to predict this quantity from tomorrow onward. Do weeks with higher predictions end up having more negative movement?
 
 ### 4. ARCH in plain English
 
-A natural starting question is whether recent surprises help predict the size of the next one.
+We'll begin with ARCH, which estimates variance using recent squared shocks. A shock is the difference between the return observed and the return the model expected.
 
-ARCH estimates variance from past squared shocks. A shock is the difference between an observed return and the model's expected return. Bigger recent surprises can raise its estimate of future variance.
-
-How much history should matter?
+In this model, a bigger surprise can raise the estimate of what comes next. The size of that response is something we'll fit from the data.
 
 ### 5. GARCH in plain English
 
-GARCH adds the previous variance estimate to that calculation. It carries a memory of risk forward.
+GARCH also uses the previous variance estimate, letting the effect of older shocks carry forward.
 
-In GARCH(1,1), **omega** supplies a baseline term, **alpha** weights the latest squared shock, and **beta** weights the previous variance estimate. Under the standard model assumptions, alpha plus beta describes persistence: values closer to one imply slower fading of a shock's effect. [Model equations](https://arch.readthedocs.io/en/latest/univariate/generated/arch.univariate.GARCH.html).
+GARCH(1,1) has three main variance coefficients: **omega**, a baseline term; **alpha**, the weight on the latest squared shock; and **beta**, the weight on the previous variance estimate. Under the standard assumptions, alpha plus beta describes persistence. Closer to one means a shock's effect fades more slowly. [Model equations](https://arch.readthedocs.io/en/latest/univariate/generated/arch.univariate.GARCH.html).
 
-But does the sign of that shock matter?
+That gives us a way to estimate how long a surprise continues to matter.
 
 ### 6. Why +4% and -4% look identical to ordinary GARCH
 
-Squaring removes the sign:
+There is a detail here that brings us back to the original question:
 
 **(+4%)² = (−4%)²**
 
-Ordinary GARCH gives equal positive and negative shocks the same direct effect on variance. These are shocks relative to the expected return; they equal raw returns if that expectation is zero.
+Ordinary GARCH responds equally to positive and negative shocks of the same size. Here, shocks are measured relative to the expected return; they match raw returns when that expectation is zero.
 
-Is that symmetry useful here, or does it discard something we need?
+Would allowing different responses help with the downside forecast?
 
 ### 7. GJR-GARCH and negative shocks
 
-GJR-GARCH adds **gamma**, an extra coefficient applied to negative squared shocks. We will estimate it rather than assume negative surprises have a larger effect.
+GJR-GARCH adds **gamma**, a coefficient that gives negative squared shocks an extra effect. Its estimated value tells us how that response differs.
 
-Our first comparison will ask how the fitted models respond to equal positive and negative shocks of 1%, 2%, and 4%.
+We'll compare the fitted models after positive and negative shocks of 1%, 2%, and 4%. Seeing those responses side by side should help make the coefficients less abstract.
 
 ### 8. Fat tails and Student-t errors
 
-We will also compare normal errors with Student-t errors, which allow heavier tails: more room for extreme surprises. The estimated **degrees of freedom** control that tail weight; smaller values mean heavier tails. [ARCH and Student-t examples](https://bashtage.github.io/arch/univariate/univariate_volatility_modeling.html).
+Another choice is how much room the model allows for extreme surprises. We'll compare normal errors with Student-t errors, which have heavier tails. The Student-t **degrees of freedom** control the tail weight: smaller values mean heavier tails. [ARCH and Student-t examples](https://bashtage.github.io/arch/univariate/univariate_volatility_modeling.html).
 
-Will these changes improve predictions on dates the models have not seen? A better description of the past is only the beginning.
+We'll see how much that changes the estimates and, later, the forecasts on unseen dates.
 
-And we still have a gap to cross: these models forecast conditional variance—variance given the available information. Our target counts only future negative returns. We will need to explain that connection before comparing their forecasts.
-
-That is our starting point. Before adding machine learning, we want to understand what the simpler models remember, what they ignore, and what evidence would persuade us that they can help.
+There's also a connection we haven't worked out yet. These models forecast conditional variance—variance given the available information—while our target counts only negative returns. How should we get from one to the other? That's one of the next questions in the experiment.
 
 ### 9. How much data do these models actually need?
 
