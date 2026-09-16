@@ -1,0 +1,67 @@
+{
+  "downloaded_utc": "2026-09-16T04:19:21.080548+00:00",
+  "requested_start": "1993-01-01",
+  "requested_end_exclusive": "2026-09-16",
+  "sources": {
+    "SPY": {
+      "provider": "Yahoo Finance via yfinance",
+      "ticker": "SPY",
+      "url": null,
+      "price_column": "Adj Close",
+      "first_date": "1993-01-29",
+      "last_date": "2026-09-15"
+    },
+    "VIX": {
+      "provider": "Yahoo Finance via yfinance",
+      "ticker": "^VIX",
+      "url": null,
+      "price_column": "Close",
+      "first_date": "1993-01-04",
+      "last_date": "2026-09-15"
+    },
+    "VIX3M": {
+      "provider": "Cboe historical CSV (Yahoo returned insufficient history)",
+      "ticker": "^VIX3M",
+      "url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX3M_History.csv",
+      "price_column": "Close",
+      "first_date": "2009-09-18",
+      "last_date": "2026-09-15"
+    }
+  },
+  "optional_failures": {},
+  "audit": {
+    "SPY": {
+      "rows": 8464,
+      "usable": 8464,
+      "missing_in_source_rows": 0,
+      "first_usable": "1993-01-29",
+      "last_usable": "2026-09-15",
+      "missing_on_SPY_dates": 0,
+      "usable_daily_returns": 8463
+    },
+    "VIX": {
+      "rows": 8792,
+      "usable": 8485,
+      "missing_in_source_rows": 307,
+      "first_usable": "1993-01-04",
+      "last_usable": "2026-09-15",
+      "missing_on_SPY_dates": 0
+    },
+    "VIX3M": {
+      "rows": 4273,
+      "usable": 4273,
+      "missing_in_source_rows": 0,
+      "first_usable": "2009-09-18",
+      "last_usable": "2026-09-15",
+      "missing_on_SPY_dates": 4191
+    }
+  },
+  "sha256": {
+    "SPY_source.csv": "070c06cce2c21f527e5ed439cf34c7455448e6553c19dad911452eb0ebd2aa93",
+    "VIX_source.csv": "79976c6c5fb34ca2b44ce4522ae7f802b64fe1e7323328550605e39ef30036c4",
+    "VIX3M_cboe_download.csv": "1345c5c74153f271e540120170529def773e0ece0f81b316969a16562dc7c89d",
+    "VIX3M_source.csv": "4873ed0c86213bf70d48533cde97796ecd66fb6009bf5f43d684c445f5fb3613",
+    "daily_prices.csv": "919942111028988df5691d3d5bfc50bd73a05f5156427246e8b63a0ae162a929"
+  },
+  "missingness_note": "Relative to source rows and observed SPY dates, not a verified exchange calendar. No filling. Common overlap does not constrain Part 1 SPY models."
+}

@@ -23,3 +23,14 @@
 
 - **Change:** Revised the opening to sound conversational and exploratory, following the author's feedback. Removed declarations about the research philosophy and reduced rhetorical questions.
 - **Result:** Sections 1–8 retain their definitions and sources; no empirical claims added.
+
+## 2026-09-16 — Part 1 supporting implementation and guided notebook
+
+- **Question:** How do squared returns differ from mean-centered shocks, and how do the four models respond to opposite shocks?
+- **Model / change:** Added return/downside helpers, chronological split, four constant-mean model fits, and shock response helpers with tests. Added the mean/variance distinction to the article. Created the first notebook as a guided outline with context and unexecuted code prompts.
+- **Data used:** Frozen SPY adjusted-close and VIX close history from Yahoo Finance. Yahoo VIX3M returned one row; Cboe CSV supplied 4,273 observations from 2009-09-18 to 2026-09-15. Source hashes and missing counts are in results/tables/data_manifest.json. The first SPY download was refreshed while finalizing the fallback; final checksums identify the snapshot used for fits.
+- **Training sample size:** 6,779 SPY returns, 1993-02-01 through 2019-12-31. Reserved test sample: 1,684 returns, 2020-01-02 through 2026-09-15. Total usable SPY returns: 8,463.
+- **Result:** 21 supporting tests passed. Preliminary fits converged without captured warnings. Parameter counts including means/distribution parameters: ARCH 3, GARCH 4, GARCH-t 5, GJR-GARCH-t 6. GJR alpha is at its zero bound. Parameters, diagnostics, and two preliminary figures are saved under results/; figures were copied to article/figures/.
+- **Interpretation:** These are training fits, not evidence of out-of-sample downside predictability. Fitted paths use full-training parameter estimates and cannot serve as historically available ML features. The missing-data audit is relative to supplied SPY dates, not a full exchange calendar.
+- **Notebook status:** The user requested a learning walkthrough before execution. No notebook code cells have been executed; the notebook has no outputs. Calculations, fits, and charts remain prompts to build together. Part 1 is not complete.
+- **Next step:** Work through the notebook with the user, starting with data inspection and return calculations. Do not automatically execute or fill in the remaining exercises; do not start Part 2.

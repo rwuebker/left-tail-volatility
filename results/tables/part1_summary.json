@@ -1,0 +1,39 @@
+{
+  "total_prices": 8464,
+  "total_returns": 8463,
+  "train_n": 6779,
+  "reserved_test_n": 1684,
+  "train_start": "1993-02-01",
+  "train_end": "2019-12-31",
+  "test_start": "2020-01-02",
+  "test_end": "2026-09-15",
+  "fit_runtime_seconds": 0.09489904204383492,
+  "shock_prior_variance_percent_squared": 1.30430790819964,
+  "seed": 42,
+  "mean_model": "estimated constant",
+  "return_definition": "simple adjusted-close returns",
+  "return_input_units": "percent for arch; decimal for daily target calculations",
+  "diagnostics": [
+    {
+      "model": "ARCH(1)",
+      "convergence_flag": 0,
+      "warnings": []
+    },
+    {
+      "model": "GARCH(1,1)",
+      "convergence_flag": 0,
+      "warnings": []
+    },
+    {
+      "model": "GARCH-t",
+      "convergence_flag": 0,
+      "warnings": []
+    },
+    {
+      "model": "GJR-GARCH-t",
+      "convergence_flag": 0,
+      "warnings": []
+    }
+  ],
+  "scope": "Part 1 training fits only. Holdout outcomes not evaluated. No forward targets or predictions."
+}

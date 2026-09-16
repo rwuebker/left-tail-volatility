@@ -17,6 +17,14 @@ Volatility describes how widely returns vary. It includes movement in both direc
 
 For this project, we'll measure total movement by adding up squared daily returns. Squaring makes larger moves count more, and gives equal weight to a rise or fall of the same size.
 
+Why square returns at all? It keeps positive and negative moves from cancelling, while making larger moves count more: a 4% move contributes four times as much as a 2% move. Absolute returns would also avoid cancellation; squaring connects the calculation to variance.
+
+That brought up another question: are we assuming the expected return is zero?
+
+Variance measures squared deviations from the expected return, μ. Raw squared returns measure distance from zero. The relationship is **E[r²] = Var(r) + μ²**. Here E means an average under the return distribution. Equating the two uses a zero-mean assumption or approximation; we can check how large that difference is in our training sample.
+
+Our downside measure deliberately uses zero as the threshold for a loss. It doesn't require the expected return to be zero. In GARCH, we'll estimate a constant mean and square the shocks around that mean.
+
 I'm curious whether separating the negative days makes the result any easier to predict.
 
 ### 3. Why downside volatility matters
