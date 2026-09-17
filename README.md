@@ -55,3 +55,17 @@ python -m jupyterlab notebooks/01_garch_foundations.ipynb
 ```
 
 Opening the notebook starts its kernel but does not execute cells. Work through them individually.
+
+## Codex beside the notebook
+
+Jupyter AI is installed in the locked development environment. Its Codex adapter is installed locally under `.tools/codex-adapter`. To recreate it:
+
+```sh
+npm install --prefix .tools/codex-adapter --save-exact @agentclientprotocol/codex-acp@1.12.0
+codex login status
+sh scripts/start_notebook.sh
+```
+
+The launcher exposes the adapter on PATH and starts token-protected JupyterLab on localhost port 8889. Open the token URL printed by Jupyter, then open the notebook and the Jupyter Chat sidebar. Create a chat and select Codex. Attach cells or files with the attachment button. Project tutoring instructions are in AGENTS.md. Existing Codex authentication is reused; a separate login may be required on another machine.
+
+The original session on port 8888 was left running to preserve its kernel state. The new session has a separate kernel: saved outputs are visible, but variables must be recreated by running the relevant cells yourself. Use one session for edits to avoid competing saves.

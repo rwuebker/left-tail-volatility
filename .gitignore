@@ -12,3 +12,6 @@ build/
 dist/
 data/raw/*
 !data/raw/.gitkeep
+
+# Local AI conversations
+*.chat
