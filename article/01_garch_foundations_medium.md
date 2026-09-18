@@ -29,21 +29,37 @@ Our snapshot has 8,464 SPY prices, from January 29, 1993 through September 15, 2
 
 We also downloaded VIX and VIX3M for later experiments. They are not inputs to these Part 1 fits. Comparing raw row counts was initially misleading: VIX contains empty rows on non-session dates and observations before our SPY sample. For a meaningful availability check, we align VIX to SPY's dates. Every SPY date has a nonmissing VIX close in this snapshot; the detailed notebook also reports extra source dates for investigation.
 
-## Why square anything?
+## From returns to variance
 
-Positive and negative returns can cancel in a sum. Squaring prevents that and gives large movements more weight: a 4% move contributes four times as much as a 2% move.
+Now that we have daily returns, how do we describe how widely they vary? Their average tells us about their center, but it doesn't tell us how spread out they are.
 
-But absolute values also prevent cancellation. The more specific reason for squaring is its connection to variance: the expected squared distance from the mean.
+One measure of that spread is **variance**: the expected squared distance from the mean. Let mu denote the expected return, so that mu = E[r]. Here E means expectation, or an average under the probability distribution. Assuming the second moment is finite, variance is defined as:
 
-![Equation 2: \mathrm{Var}(r) = E((r-E(r))^2)](equations/part1_02.png)
+![Equation 2: \mathrm{Var}(r) = E((r-\mu)^2)](equations/part1_02.png)
 
-E means expectation, or the average under the probability distribution. Raw squared returns measure distance from zero, which gives the exact identity:
+The subtraction centers each return on its mean. Why then square the difference? Deviations above and below the mean average to zero; squaring keeps them from cancelling and gives larger deviations more weight. A deviation of four percentage points contributes four times as much as a deviation of two percentage points. Absolute deviations would also measure spread, but they define a different quantity. ARCH and GARCH model variance.
 
-![Equation 3: E(r^2) = \mathrm{Var}(r) + (E(r))^2](equations/part1_03.png)
+That raises a question we'll need shortly: how does a squared deviation from the mean relate to a raw squared return?
 
-So a squared return is not automatically a variance. Equating the expected squared return with variance requires a zero mean. Treating them as approximately equal when the mean is small is an approximation whose error is the squared mean.
+Start by expanding the square:
 
-That distinction matters because our volatility models estimate a mean, then square the surprises around it.
+![Equation 3: (r-\mu)^2 = r^2 - 2\mu r + \mu^2](equations/part1_03.png)
+
+Take the expectation of each term. Because mu is a constant, we can pull it outside the expectation, and the expectation of mu squared is just mu squared:
+
+![Equation 4: \mathrm{Var}(r) = E(r^2) - 2\mu E(r) + \mu^2](equations/part1_04.png)
+
+Now substitute E[r] = mu:
+
+![Equation 5: \mathrm{Var}(r) = E(r^2) - 2\mu^2 + \mu^2 = E(r^2) - \mu^2](equations/part1_05.png)
+
+Rearranging gives the connection:
+
+![Equation 6: E(r^2) = \mathrm{Var}(r) + \mu^2](equations/part1_06.png)
+
+This identity is exact; it does not require normally distributed returns. The expected squared return measures distance from zero, while variance measures distance from the mean. They are equal when the mean is zero. Approximating one by the other neglects mu squared; whether that is small enough depends on its size relative to the variance.
+
+An individual squared return is still only one observation, not the variance itself. In our models, we estimate a mean and use the squared shocks around that mean. Keeping those quantities separate will help us understand what the models are learning.
 
 ## A short detour: the loss after a round trip
 
@@ -51,13 +67,13 @@ Suppose we earn 10%, then lose 10%. Starting with 100, we finish with 99. The ar
 
 For equal and opposite simple returns, this is exact:
 
-![Equation 4: (1+r)(1-r) = 1-r^2](equations/part1_04.png)
+![Equation 7: (1+r)(1-r) = 1-r^2](equations/part1_07.png)
 
 The second percentage change acts on a different balance. No normal distribution or stochastic process is needed to explain this example.
 
 A related expression comes from approximating the log return for small r:
 
-![Equation 5: \log(1+r) \approx r-\frac{r^2}{2}](equations/part1_05.png)
+![Equation 8: \log(1+r) \approx r-\frac{r^2}{2}](equations/part1_08.png)
 
 This is a second-order Taylor approximation, not an exact formula for an arbitrary finite return. Taking expectations introduces both variance and squared mean through the identity above. It helps explain the difference between arithmetic and compounded growth, but it is not the reason ARCH assumes that yesterday's squared shock predicts today's variance. That is a separate modeling assumption.
 
@@ -65,19 +81,19 @@ This is a second-order Taylor approximation, not an exact formula for an arbitra
 
 Write the return as a constant mean plus a shock:
 
-![Equation 6: r_t = \mu + \epsilon_t, \qquad \epsilon_t = \sqrt{h_t}\,z_t](equations/part1_06.png)
+![Equation 9: r_t = \mu + \epsilon_t, \qquad \epsilon_t = \sqrt{h_t}\,z_t](equations/part1_09.png)
 
 The shock, epsilon, is the return minus the modeled expected return. The quantity h is conditional variance: variance given the information available before that return. The standardized innovation z has mean zero and variance one under our model assumptions. Volatility is the square root of h.
 
 ARCH stands for autoregressive conditional heteroskedasticity. In plain language, it allows variance to change over time according to past shocks. ARCH(1) uses one lag:
 
-![Equation 7: h_{t+1} = \omega + \alpha\epsilon_t^2](equations/part1_07.png)
+![Equation 10: h_{t+1} = \omega + \alpha\epsilon_t^2](equations/part1_10.png)
 
 Omega is a positive baseline term. Alpha is a nonnegative weight on the most recent squared shock. A bigger surprise raises the next variance estimate when alpha is positive.
 
 Why square the shock? Because, under the conditional-mean assumption:
 
-![Equation 8: E(\epsilon_t^2\mid\mathcal{F}_{t-1}) = h_t](equations/part1_08.png)
+![Equation 11: E(\epsilon_t^2\mid\mathcal{F}_{t-1}) = h_t](equations/part1_11.png)
 
 The symbol F represents information available at that time. A realized squared shock is a noisy observation of conditional variance. ARCH assumes its recent value helps predict the next variance. We still have to test whether that relationship forecasts well.
 
@@ -85,7 +101,7 @@ The symbol F represents information available at that time. A realized squared s
 
 ARCH(1) responds only to the latest shock. GARCH(1,1) adds the previous variance estimate:
 
-![Equation 9: h_{t+1} = \omega + \alpha\epsilon_t^2 + \beta h_t](equations/part1_09.png)
+![Equation 12: h_{t+1} = \omega + \alpha\epsilon_t^2 + \beta h_t](equations/part1_12.png)
 
 Beta carries the model's previous assessment forward. Alpha plus beta describes persistence in expected variance under the usual standardized-error assumptions. When this sum is below one, the model has a finite long-run variance under the standard conditions; values close to one imply slow reversion toward that level. These specifications are documented in the [arch package's variance-model reference](https://arch.readthedocs.io/en/latest/univariate/generated/arch.univariate.GARCH.html).
 
@@ -101,11 +117,11 @@ Our GARCH-t fit estimates nu at approximately 5.87. This is a fitted distributio
 
 Ordinary GARCH gives equal responses to equal-magnitude positive and negative shocks:
 
-![Equation 10: (+0.04)^2 = (-0.04)^2 = 0.0016](equations/part1_10.png)
+![Equation 13: (+0.04)^2 = (-0.04)^2 = 0.0016](equations/part1_13.png)
 
 These are surprises relative to the mean, not necessarily raw returns. GJR-GARCH adds a term that switches on for negative shocks:
 
-![Equation 11: h_{t+1} = \omega + \alpha\epsilon_t^2 + \gamma\epsilon_t^2 I(\epsilon_t<0) + \beta h_t](equations/part1_11.png)
+![Equation 14: h_{t+1} = \omega + \alpha\epsilon_t^2 + \gamma\epsilon_t^2 I(\epsilon_t<0) + \beta h_t](equations/part1_14.png)
 
 The indicator I is one when the shock is negative and zero otherwise. Positive shocks receive weight alpha; negative shocks receive alpha plus gamma. Gamma describes asymmetry; the equation alone does not explain its economic cause. The [arch modeling examples](https://arch.readthedocs.io/en/latest/univariate/univariate_volatility_modeling.html) show this specification and its implementation.
 
@@ -152,7 +168,7 @@ All four saved fits report successful optimizer convergence with no captured war
 
 A conditional variance forecast describes variation around a mean. Our proposed target counts negative raw returns over the next five trading days:
 
-![Equation 12: \mathrm{DSV}_{t,t+5} = \sum_{i=1}^{5} r_{t+i}^2 I(r_{t+i}<0)](equations/part1_12.png)
+![Equation 15: \mathrm{DSV}_{t,t+5} = \sum_{i=1}^{5} r_{t+i}^2 I(r_{t+i}<0)](equations/part1_15.png)
 
 This downside realized variance is a zero-threshold squared-loss measure. Positive days contribute zero. It is neither the week's net loss nor its maximum drawdown, and it discards the order of losses within the window. It counts ordinary negative days as well as extreme ones.
 

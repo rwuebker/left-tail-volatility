@@ -31,25 +31,47 @@ Our snapshot has 8,464 SPY prices, from January 29, 1993 through September 15, 2
 
 We also downloaded VIX and VIX3M for later experiments. They are not inputs to these Part 1 fits. Comparing raw row counts was initially misleading: VIX contains empty rows on non-session dates and observations before our SPY sample. For a meaningful availability check, we align VIX to SPY's dates. Every SPY date has a nonmissing VIX close in this snapshot; the detailed notebook also reports extra source dates for investigation.
 
-## Why square anything?
+## From returns to variance
 
-Positive and negative returns can cancel in a sum. Squaring prevents that and gives large movements more weight: a 4% move contributes four times as much as a 2% move.
+Now that we have daily returns, how do we describe how widely they vary? Their average tells us about their center, but it doesn't tell us how spread out they are.
 
-But absolute values also prevent cancellation. The more specific reason for squaring is its connection to variance: the expected squared distance from the mean.
-
-$$
-\mathrm{Var}(r) = E[(r-E[r])^2]
-$$
-
-E means expectation, or the average under the probability distribution. Raw squared returns measure distance from zero, which gives the exact identity:
+One measure of that spread is **variance**: the expected squared distance from the mean. Let mu denote the expected return, so that mu = E[r]. Here E means expectation, or an average under the probability distribution. Assuming the second moment is finite, variance is defined as:
 
 $$
-E[r^2] = \mathrm{Var}(r) + (E[r])^2
+\mathrm{Var}(r) = E[(r-\mu)^2]
 $$
 
-So a squared return is not automatically a variance. Equating the expected squared return with variance requires a zero mean. Treating them as approximately equal when the mean is small is an approximation whose error is the squared mean.
+The subtraction centers each return on its mean. Why then square the difference? Deviations above and below the mean average to zero; squaring keeps them from cancelling and gives larger deviations more weight. A deviation of four percentage points contributes four times as much as a deviation of two percentage points. Absolute deviations would also measure spread, but they define a different quantity. ARCH and GARCH model variance.
 
-That distinction matters because our volatility models estimate a mean, then square the surprises around it.
+That raises a question we'll need shortly: how does a squared deviation from the mean relate to a raw squared return?
+
+Start by expanding the square:
+
+$$
+(r-\mu)^2 = r^2 - 2\mu r + \mu^2
+$$
+
+Take the expectation of each term. Because mu is a constant, we can pull it outside the expectation, and the expectation of mu squared is just mu squared:
+
+$$
+\mathrm{Var}(r) = E[r^2] - 2\mu E[r] + \mu^2
+$$
+
+Now substitute E[r] = mu:
+
+$$
+\mathrm{Var}(r) = E[r^2] - 2\mu^2 + \mu^2 = E[r^2] - \mu^2
+$$
+
+Rearranging gives the connection:
+
+$$
+E[r^2] = \mathrm{Var}(r) + \mu^2
+$$
+
+This identity is exact; it does not require normally distributed returns. The expected squared return measures distance from zero, while variance measures distance from the mean. They are equal when the mean is zero. Approximating one by the other neglects mu squared; whether that is small enough depends on its size relative to the variance.
+
+An individual squared return is still only one observation, not the variance itself. In our models, we estimate a mean and use the squared shocks around that mean. Keeping those quantities separate will help us understand what the models are learning.
 
 ## A short detour: the loss after a round trip
 

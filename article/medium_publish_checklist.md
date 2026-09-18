@@ -13,7 +13,7 @@
 - [ ] Create a Medium draft titled **What does GARCH actually learn about volatility?** with subtitle **Predicting the Left Tail · Part 1 of 7**.
 - [ ] Copy the text from `01_garch_foundations_medium.md` section by section. This is an upload guide, not a guarantee of automatic Markdown import.
 - [ ] Format headings and short code snippets using Medium's editor. Preserve indentation and plain-text code, including `fill_method=None` and the training cutoff.
-- [ ] Upload `equations/part1_01.png` through `equations/part1_12.png` at their matching image markers. The canonical Markdown retains the editable LaTeX. Use the surrounding explanation and equation alt text to provide an accessible text equivalent.
+- [ ] Upload `equations/part1_01.png` through `equations/part1_15.png` at their matching image markers. The canonical Markdown retains the editable LaTeX. Use the surrounding explanation and equation alt text to provide an accessible text equivalent.
 - [ ] Upload `figures/shock_responses.png` and `figures/training_volatility.png`; retain their captions and descriptive alt text.
 - [ ] Upload `figures/part1_model_comparison.png` at the model-table marker. The canonical GitHub article retains the values in an accessible text table; keep that link and the AIC explanation.
 - [ ] Use absolute GitHub links for the repository, README instructions, and notebook. Replace relative links when copying from the GitHub source.
