@@ -63,3 +63,10 @@
 - **Validation:** 32 tests passed, including 11 new checks for causal forecasts, threshold exclusion of the present score, delayed execution, known downside moments, self-financing rebalancing after costs, market-drift turnover, cash/all-SPY cases, and compounding. New notebook supplement executed in a fresh kernel while preserving earlier code/outputs.
 - **Interpretation:** Smaller drawdown and lower return; no demonstrated economic or statistical superiority. GJR has more turnover than the historical signal. Median Monte Carlo SE/forecast approximately 1.3%; it excludes parameter uncertainty. Zero cash interest, fixed costs, no taxes/market impact, and a single observed historical period limit conclusions. The 2020 crash is not evaluated. The 2021 and 2026 annual rows are partial years.
 - **Next step:** Review the notebook results together before Part 2; do not tune to the now-observed evaluation period without labeling the work exploratory.
+
+## 2026-09-18 — Expand the article’s backtest charts
+
+- **Request:** Show more trading-strategy results as charts directly in the Part 1 article.
+- **Change:** Added four reproducible charts: wealth/drawdown, annual returns, risk-threshold/exposure behavior, and cost sensitivity/turnover. Embedded them with captions and alt text in the article and regenerated the Medium and HTML copies.
+- **Data / validation:** Used existing results/backtest CSVs only, without rerunning or tuning the experiment. The chart script checks terminal wealth, maximum drawdowns, and annual compounding against the saved daily ledger and metrics. Partial years/months and cost/cash assumptions are labeled.
+- **Interpretation:** The figures show both reduced losses and forgone gains. No model-performance claim or backtest setting changed.

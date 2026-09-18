@@ -132,3 +132,12 @@ python scripts/run_backtest.py
 The script checks SPY against the committed reference checksum and stops on mismatch. It saves dated forecasts, signals, portfolio accounting, all three cost scenarios, metadata, and the performance chart under `results/backtest/`. The entry date is 2021-01-04; the first earned return ends 2021-01-05. Cash earns zero and the primary cost is 5 basis points per traded dollar. The saved results can be read without downloading data; rerunning requires the matching snapshot.
 
 At the primary cost, GJR earns 12.87% annualized with a 19.66% maximum drawdown; buy-and-hold earns 14.94% with a 24.50% drawdown. This pilot does not establish a forecasting or investment-performance advantage.
+
+Regenerate the article’s four backtest charts from the saved CSV artifacts (no data download or model fit required):
+
+```sh
+python scripts/plot_backtest_article.py
+python scripts/render_article.py
+```
+
+The charts cover growth and drawdowns, annual returns, exposure decisions, and cost sensitivity. They are embedded in both article versions.

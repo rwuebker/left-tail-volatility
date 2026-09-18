@@ -197,7 +197,7 @@ All four saved fits report successful optimizer convergence with no captured war
 
 *These paths use parameters estimated from the entire training period. They illustrate the fit, but were not forecasts available at each historical date and must not be used as such in later ML experiments.*
 
-## Conclusion: what the models tell us so far
+## From variance forecasts to a SPY allocation
 
 The fits give us three concrete observations: GARCH carries variance estimates forward, Student-t innovations allow heavier tails, and our fitted GJR model responds more strongly to negative shocks. These are properties of the fitted models, not evidence that they improve investment outcomes.
 
@@ -209,13 +209,39 @@ $$
 
 This downside realized variance is a zero-threshold squared-loss measure. Positive days contribute zero. It is neither the week's net loss nor its maximum drawdown, and it discards the order of losses within the window. It counts ordinary negative days as well as extreme ones.
 
-Adding asymmetry to GARCH does not automatically turn its total-variance forecast into this downside forecast. Part 2 will work through that relationship, define the target carefully, and begin walk-forward evaluation: predicting using only information available at each forecast date.
+Adding asymmetry to GARCH does not automatically turn its total-variance forecast into this downside forecast. The pilot below uses simulated return paths to connect the two. Part 2 will examine the target and forecast accuracy more fully, using information available at each forecast date.
 
 The notebook now includes a first practical test: hold 100% SPY normally and reduce to 50% when the five-session downside forecast exceeds the 80th percentile of its previous 252 forecasts. These are **heuristics**, meaning practical experimental choices rather than proven optimal values. Forecasts average 20,000 simulated GJR-t return paths, retaining the fitted mean; this is a Monte Carlo approximation, not an assumption that downside variance is half of total variance.
 
 Parameters are frozen at the 2019 fit. Forecasts from 2020 calibrate the threshold; the portfolio enters at the January 4, 2021 close and is evaluated through September 15, 2026. Signals execute at the following close, cash earns zero, and entry, rebalancing, and liquidation cost 5 basis points per traded dollar. The 2020 crash is outside this evaluation.
 
-GJR earned **12.87% annualized**, compared with **14.94%** for buy-and-hold. Its maximum drawdown was **19.66%**, versus **24.50%**, with average SPY exposure of **89.65%**. A simpler historical-downside rule earned **13.36%** with a **20.15%** drawdown at almost the same exposure. The notebook shows wealth paths, annual outcomes, and the prespecified cost sensitivity.
+GJR earned **12.87% annualized**, compared with **14.94%** for buy-and-hold. Its maximum drawdown was **19.66%**, versus **24.50%**, with average SPY exposure of **89.65%**. A simpler historical-downside rule earned **13.36%** with a **20.15%** drawdown at almost the same exposure. The historical rule uses five times the trailing 20-session mean of squared negative returns, with the same allocation logic and its own past-forecast threshold.
+
+### What happened to an initial $10,000?
+
+![Growth of $10,000 and drawdowns for all four strategies; buy-and-hold ends highest, while fixed 50/50 has the shallowest drawdowns.](figures/backtest_growth_drawdown.png)
+
+*All portfolios cover the same dates and pay 5 basis points per dollar traded, including entry and exit. The lower panel measures each portfolio’s decline from its own previous peak. GJR ends at $19,924, compared with $22,096 for buy-and-hold and $20,419 for the historical rule.*
+
+### Where did the tradeoff show up?
+
+![Grouped net returns by year for the four allocations, including negative returns in 2022 and smaller GJR gains than buy-and-hold in 2024.](figures/backtest_annual_returns.png)
+
+*GJR lost 13.48% in 2022 versus 18.18% for buy-and-hold. In 2024, it earned 14.91% versus 24.89%. The first and final years are partial periods; the bars are period returns, not annualized estimates. Reduced exposure can soften losses and miss rebounds.*
+
+### When did exposure change?
+
+![GJR forecast divided by its prior risk threshold, followed by monthly mean SPY exposure for the GJR and historical-downside rules.](figures/backtest_exposure.png)
+
+*The upper panel shows the GJR signal: above one, it requests a reduction to 50% SPY. Execution occurs at the following close and affects subsequent returns. The lower panel averages actual exposure by month for readability; the daily rule itself uses 50% or 100%. Full-period average exposure is 89.65% for GJR and 89.62% for the historical rule.*
+
+### How much did trading costs matter?
+
+![Annualized returns at zero, five, and ten basis points of trading costs, alongside annual turnover showing more trading by GJR than by the historical rule.](figures/backtest_cost_sensitivity.png)
+
+*These three cost assumptions were specified before the results were inspected. GJR’s CAGR falls from 13.19% with no trading costs to 12.54% at 10 basis points. At the primary 5-basis-point setting it trades about 5.75 portfolio-equivalents per year, compared with 2.95 for the historical rule. These are scenario assumptions, not measured execution quotes.*
+
+## Conclusion: what this experiment establishes
 
 This is a return/risk tradeoff, not a demonstrated advantage for GJR. Holding less SPY sacrifices gains as well as reducing losses, and the historical rule earned more with less trading. Cash-rate assumptions, simulation error, and parameter uncertainty remain limitations. Now that these outcomes are visible, changing the rules in response would make another test on the same dates exploratory rather than untouched.
 
@@ -227,7 +253,12 @@ The [repository instructions](../README.md#prepare-the-data-and-run-part-1) desc
 python scripts/download_data.py
 python -m pytest
 python scripts/run_garch.py
+python scripts/run_backtest.py
+python scripts/plot_backtest_article.py
+python scripts/render_article.py
 ```
+
+The chart script reads the saved backtest CSVs without refitting models or rerunning simulations. It checks plotted terminal wealth, drawdowns, and annual returns against the saved metrics and daily ledger.
 
 The scripts record data checksums and reuse the local snapshot. **Reproducibility limitation:** a fresh provider download may differ from our original inputs. This draft shares the code, reference estimates, and source manifest; a publicly obtainable frozen snapshot and its reference-verification workflow are still pending. We cannot yet promise that a fresh checkout will produce identical estimates. Numerical fitting can also vary slightly across platforms.
 

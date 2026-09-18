@@ -125,22 +125,39 @@ fit = arch_model(
 <p><em>We apply shocks of ±1, ±2, and ±4 percentage points around the modeled mean, holding previous variance fixed at 1.304 percentage-points squared—the training sample variance. This controlled comparison isolates the fitted response; it is not an observed market event or a backtest.</em></p>
 <p><img src="figures/training_volatility.png" alt="Training returns and the conditional volatility paths fitted by GARCH-t and GJR-GARCH-t." /></p>
 <p><em>These paths use parameters estimated from the entire training period. They illustrate the fit, but were not forecasts available at each historical date and must not be used as such in later ML experiments.</em></p>
-<h2>Conclusion: what the models tell us so far</h2>
+<h2>From variance forecasts to a SPY allocation</h2>
 <p>The fits give us three concrete observations: GARCH carries variance estimates forward, Student-t innovations allow heavier tails, and our fitted GJR model responds more strongly to negative shocks. These are properties of the fitted models, not evidence that they improve investment outcomes.</p>
 <p>A conditional variance forecast describes variation around a mean. Our proposed target counts negative raw returns over the next five trading days:</p>
 <p><img src="equations/part1_15.png" alt="Equation 15: \mathrm{DSV}{t,t+5} = \sum{i=1}^{5} r_{t+i}^2 I(r_{t+i}&lt;0)" /></p>
 <p>This downside realized variance is a zero-threshold squared-loss measure. Positive days contribute zero. It is neither the week's net loss nor its maximum drawdown, and it discards the order of losses within the window. It counts ordinary negative days as well as extreme ones.</p>
-<p>Adding asymmetry to GARCH does not automatically turn its total-variance forecast into this downside forecast. Part 2 will work through that relationship, define the target carefully, and begin walk-forward evaluation: predicting using only information available at each forecast date.</p>
+<p>Adding asymmetry to GARCH does not automatically turn its total-variance forecast into this downside forecast. The pilot below uses simulated return paths to connect the two. Part 2 will examine the target and forecast accuracy more fully, using information available at each forecast date.</p>
 <p>The notebook now includes a first practical test: hold 100% SPY normally and reduce to 50% when the five-session downside forecast exceeds the 80th percentile of its previous 252 forecasts. These are <strong>heuristics</strong>, meaning practical experimental choices rather than proven optimal values. Forecasts average 20,000 simulated GJR-t return paths, retaining the fitted mean; this is a Monte Carlo approximation, not an assumption that downside variance is half of total variance.</p>
 <p>Parameters are frozen at the 2019 fit. Forecasts from 2020 calibrate the threshold; the portfolio enters at the January 4, 2021 close and is evaluated through September 15, 2026. Signals execute at the following close, cash earns zero, and entry, rebalancing, and liquidation cost 5 basis points per traded dollar. The 2020 crash is outside this evaluation.</p>
-<p>GJR earned <strong>12.87% annualized</strong>, compared with <strong>14.94%</strong> for buy-and-hold. Its maximum drawdown was <strong>19.66%</strong>, versus <strong>24.50%</strong>, with average SPY exposure of <strong>89.65%</strong>. A simpler historical-downside rule earned <strong>13.36%</strong> with a <strong>20.15%</strong> drawdown at almost the same exposure. The notebook shows wealth paths, annual outcomes, and the prespecified cost sensitivity.</p>
+<p>GJR earned <strong>12.87% annualized</strong>, compared with <strong>14.94%</strong> for buy-and-hold. Its maximum drawdown was <strong>19.66%</strong>, versus <strong>24.50%</strong>, with average SPY exposure of <strong>89.65%</strong>. A simpler historical-downside rule earned <strong>13.36%</strong> with a <strong>20.15%</strong> drawdown at almost the same exposure. The historical rule uses five times the trailing 20-session mean of squared negative returns, with the same allocation logic and its own past-forecast threshold.</p>
+<h3>What happened to an initial $10,000?</h3>
+<p><img src="figures/backtest_growth_drawdown.png" alt="Growth of $10,000 and drawdowns for all four strategies; buy-and-hold ends highest, while fixed 50/50 has the shallowest drawdowns." /></p>
+<p><em>All portfolios cover the same dates and pay 5 basis points per dollar traded, including entry and exit. The lower panel measures each portfolio’s decline from its own previous peak. GJR ends at $19,924, compared with $22,096 for buy-and-hold and $20,419 for the historical rule.</em></p>
+<h3>Where did the tradeoff show up?</h3>
+<p><img src="figures/backtest_annual_returns.png" alt="Grouped net returns by year for the four allocations, including negative returns in 2022 and smaller GJR gains than buy-and-hold in 2024." /></p>
+<p><em>GJR lost 13.48% in 2022 versus 18.18% for buy-and-hold. In 2024, it earned 14.91% versus 24.89%. The first and final years are partial periods; the bars are period returns, not annualized estimates. Reduced exposure can soften losses and miss rebounds.</em></p>
+<h3>When did exposure change?</h3>
+<p><img src="figures/backtest_exposure.png" alt="GJR forecast divided by its prior risk threshold, followed by monthly mean SPY exposure for the GJR and historical-downside rules." /></p>
+<p><em>The upper panel shows the GJR signal: above one, it requests a reduction to 50% SPY. Execution occurs at the following close and affects subsequent returns. The lower panel averages actual exposure by month for readability; the daily rule itself uses 50% or 100%. Full-period average exposure is 89.65% for GJR and 89.62% for the historical rule.</em></p>
+<h3>How much did trading costs matter?</h3>
+<p><img src="figures/backtest_cost_sensitivity.png" alt="Annualized returns at zero, five, and ten basis points of trading costs, alongside annual turnover showing more trading by GJR than by the historical rule." /></p>
+<p><em>These three cost assumptions were specified before the results were inspected. GJR’s CAGR falls from 13.19% with no trading costs to 12.54% at 10 basis points. At the primary 5-basis-point setting it trades about 5.75 portfolio-equivalents per year, compared with 2.95 for the historical rule. These are scenario assumptions, not measured execution quotes.</em></p>
+<h2>Conclusion: what this experiment establishes</h2>
 <p>This is a return/risk tradeoff, not a demonstrated advantage for GJR. Holding less SPY sacrifices gains as well as reducing losses, and the historical rule earned more with less trading. Cash-rate assumptions, simulation error, and parameter uncertainty remain limitations. Now that these outcomes are visible, changing the rules in response would make another test on the same dates exploratory rather than untouched.</p>
 <h2>Run the accompanying work</h2>
 <p>The <a href="https://github.com/rwuebker/left-tail-volatility/blob/main/README.md#prepare-the-data-and-run-part-1">repository instructions</a> describe Python 3.11.14, locked dependencies, data preparation, tests, and the <a href="https://github.com/rwuebker/left-tail-volatility/blob/main/notebooks/01_garch_foundations.ipynb">Part 1 notebook</a>. After environment setup, run these from the project root:</p>
 <pre><code class="language-sh">python scripts/download_data.py
 python -m pytest
 python scripts/run_garch.py
+python scripts/run_backtest.py
+python scripts/plot_backtest_article.py
+python scripts/render_article.py
 </code></pre>
+<p>The chart script reads the saved backtest CSVs without refitting models or rerunning simulations. It checks plotted terminal wealth, drawdowns, and annual returns against the saved metrics and daily ledger.</p>
 <p>The scripts record data checksums and reuse the local snapshot. <strong>Reproducibility limitation:</strong> a fresh provider download may differ from our original inputs. This draft shares the code, reference estimates, and source manifest; a publicly obtainable frozen snapshot and its reference-verification workflow are still pending. We cannot yet promise that a fresh checkout will produce identical estimates. Numerical fitting can also vary slightly across platforms.</p>
 <p><a href="https://github.com/rwuebker/left-tail-volatility/blob/main/article/SERIES.md">Series guide</a> · Next: Defining and forecasting downside risk (in preparation)</p>
 </main></html>
