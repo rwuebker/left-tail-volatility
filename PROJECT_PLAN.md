@@ -1,3 +1,9 @@
+CURRENT SCOPE UPDATE — 2026-09-18
+
+The author requested a conclusion for each installment and a simple out-of-sample SPY/cash allocation experiment. Follow BACKTEST_PLAN.md for this narrow addition. It supersedes the original prohibition on all trading-strategy work; broader strategies and hedging remain deferred. Begin the downside-driven backtest in Part 2 after constructing valid forecasts, then apply the same protocol to subsequent models. Part 1's conclusion must state that economic value has not yet been tested.
+
+The original guide follows for context.
+
 Create a new quantitative research project in the current workbench directory:
 
 left-tail-volatility

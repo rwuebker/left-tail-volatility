@@ -120,3 +120,7 @@ python scripts/render_article.py
 ```
 
 Open `article/01_garch_foundations.html` locally, or use the Markdown version on GitHub. See [the Medium publishing checklist](article/medium_publish_checklist.md). No Medium article has been published yet.
+
+## Economic-value extension
+
+The series will include a simple SPY/cash allocation backtest beginning in Part 2, alongside forecast evaluation. See [BACKTEST_PLAN.md](BACKTEST_PLAN.md) for proposed rules and the chronological evaluation design. No strategy backtest has been implemented or evaluated yet; Part 1 remains a study of fitted model behavior.

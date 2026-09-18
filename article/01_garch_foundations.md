@@ -197,7 +197,9 @@ All four saved fits report successful optimizer convergence with no captured war
 
 *These paths use parameters estimated from the entire training period. They illustrate the fit, but were not forecasts available at each historical date and must not be used as such in later ML experiments.*
 
-## The question we still haven't answered
+## Conclusion: what the models tell us so far
+
+The fits give us three concrete observations: GARCH carries variance estimates forward, Student-t innovations allow heavier tails, and our fitted GJR model responds more strongly to negative shocks. These are properties of the fitted models, not evidence that they improve investment outcomes.
 
 A conditional variance forecast describes variation around a mean. Our proposed target counts negative raw returns over the next five trading days:
 
@@ -209,7 +211,9 @@ This downside realized variance is a zero-threshold squared-loss measure. Positi
 
 Adding asymmetry to GARCH does not automatically turn its total-variance forecast into this downside forecast. Part 2 will work through that relationship, define the target carefully, and begin walk-forward evaluation: predicting using only information available at each forecast date.
 
-For now, we have fitted models that remember shocks and can distinguish their signs. Whether that helps predict the downside remains an open question.
+We will also ask a practical question: would an investor holding SPY have benefited from reducing exposure when predicted downside risk was high? Starting in Part 2, we will compare a simple SPY/cash rule with buy-and-hold and simpler allocation baselines, using forecasts produced from information available at each date and accounting for delayed execution and trading costs.
+
+There are no strategy results in Part 1. A smaller drawdown alone would not establish useful timing: holding less SPY can reduce losses while also sacrificing gains. The next experiments need to show both sides of that tradeoff.
 
 ## Run the accompanying work
 

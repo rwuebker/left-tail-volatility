@@ -45,3 +45,10 @@
 - **Interpretation:** These are in-sample results and controlled response scenarios, not out-of-sample forecasts, causal explanations, or evidence of economic value. GJR alpha is at the zero boundary. Validation reused the preserved local snapshot and installed locked environment; it did not establish clean-checkout data availability or validate a fresh installation on another platform.
 - **Publication status:** Prepared for the public `rwuebker/left-tail-volatility` repository. Medium text is a review draft, not a published Medium story. Frozen-data distribution and checks against immutable reference hashes remain unfinished and are disclosed in both README and article.
 - **Next step:** Review the Part 1 article for Medium. Resolve exact-input distribution before claiming full fresh-checkout reproducibility. Continue with Part 2 only as a separate reviewed research step.
+
+## 2026-09-18 — Add economic-value question to the series
+
+- **Question:** Would reducing SPY exposure during predicted high downside risk improve out-of-sample investment outcomes after costs?
+- **Change:** At the author's request, extend the original forecasting-only scope with a narrow SPY/cash experiment and a conclusion for every part. Added BACKTEST_PLAN.md with proposed heuristic defaults, delayed execution, baseline comparisons, accounting checks, and final-test reuse restrictions.
+- **Result:** Planning and article changes only. No forecasts, strategy returns, or new empirical results were generated. First downside-driven implementation belongs in Part 2. Exact evaluation dates and refit schedules must be frozen before results are inspected.
+- **Interpretation:** Forecast accuracy, economic value, and reduced exposure are different claims. The revised Part 1 conclusion makes their current limits explicit.

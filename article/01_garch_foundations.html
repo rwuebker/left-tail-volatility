@@ -125,12 +125,14 @@ fit = arch_model(
 <p><em>We apply shocks of ±1, ±2, and ±4 percentage points around the modeled mean, holding previous variance fixed at 1.304 percentage-points squared—the training sample variance. This controlled comparison isolates the fitted response; it is not an observed market event or a backtest.</em></p>
 <p><img src="figures/training_volatility.png" alt="Training returns and the conditional volatility paths fitted by GARCH-t and GJR-GARCH-t." /></p>
 <p><em>These paths use parameters estimated from the entire training period. They illustrate the fit, but were not forecasts available at each historical date and must not be used as such in later ML experiments.</em></p>
-<h2>The question we still haven't answered</h2>
+<h2>Conclusion: what the models tell us so far</h2>
+<p>The fits give us three concrete observations: GARCH carries variance estimates forward, Student-t innovations allow heavier tails, and our fitted GJR model responds more strongly to negative shocks. These are properties of the fitted models, not evidence that they improve investment outcomes.</p>
 <p>A conditional variance forecast describes variation around a mean. Our proposed target counts negative raw returns over the next five trading days:</p>
 <p><img src="equations/part1_15.png" alt="Equation 15: \mathrm{DSV}{t,t+5} = \sum{i=1}^{5} r_{t+i}^2 I(r_{t+i}&lt;0)" /></p>
 <p>This downside realized variance is a zero-threshold squared-loss measure. Positive days contribute zero. It is neither the week's net loss nor its maximum drawdown, and it discards the order of losses within the window. It counts ordinary negative days as well as extreme ones.</p>
 <p>Adding asymmetry to GARCH does not automatically turn its total-variance forecast into this downside forecast. Part 2 will work through that relationship, define the target carefully, and begin walk-forward evaluation: predicting using only information available at each forecast date.</p>
-<p>For now, we have fitted models that remember shocks and can distinguish their signs. Whether that helps predict the downside remains an open question.</p>
+<p>We will also ask a practical question: would an investor holding SPY have benefited from reducing exposure when predicted downside risk was high? Starting in Part 2, we will compare a simple SPY/cash rule with buy-and-hold and simpler allocation baselines, using forecasts produced from information available at each date and accounting for delayed execution and trading costs.</p>
+<p>There are no strategy results in Part 1. A smaller drawdown alone would not establish useful timing: holding less SPY can reduce losses while also sacrificing gains. The next experiments need to show both sides of that tradeoff.</p>
 <h2>Run the accompanying work</h2>
 <p>The <a href="https://github.com/rwuebker/left-tail-volatility/blob/main/README.md#prepare-the-data-and-run-part-1">repository instructions</a> describe Python 3.11.14, locked dependencies, data preparation, tests, and the <a href="https://github.com/rwuebker/left-tail-volatility/blob/main/notebooks/01_garch_foundations.ipynb">Part 1 notebook</a>. After environment setup, run these from the project root:</p>
 <pre><code class="language-sh">python scripts/download_data.py
