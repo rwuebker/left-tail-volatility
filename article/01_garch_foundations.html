@@ -20,9 +20,9 @@ returns = prices.pct_change(fill_method=None)
 <h2>Why square anything?</h2>
 <p>Positive and negative returns can cancel in a sum. Squaring prevents that and gives large movements more weight: a 4% move contributes four times as much as a 2% move.</p>
 <p>But absolute values also prevent cancellation. The more specific reason for squaring is its connection to variance: the expected squared distance from the mean.</p>
-<p><img src="equations/part1_02.png" alt="Equation 2: \operatorname{Var}(r) = E((r-E(r))^2)" /></p>
+<p><img src="equations/part1_02.png" alt="Equation 2: \mathrm{Var}(r) = E((r-E(r))^2)" /></p>
 <p>E means expectation, or the average under the probability distribution. Raw squared returns measure distance from zero, which gives the exact identity:</p>
-<p><img src="equations/part1_03.png" alt="Equation 3: E(r^2) = \operatorname{Var}(r) + (E(r))^2" /></p>
+<p><img src="equations/part1_03.png" alt="Equation 3: E(r^2) = \mathrm{Var}(r) + (E(r))^2" /></p>
 <p>So a squared return is not automatically a variance. Equating the expected squared return with variance requires a zero mean. Treating them as approximately equal when the mean is small is an approximation whose error is the squared mean.</p>
 <p>That distinction matters because our volatility models estimate a mean, then square the surprises around it.</p>
 <h2>A short detour: the loss after a round trip</h2>

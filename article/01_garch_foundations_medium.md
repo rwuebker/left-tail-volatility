@@ -35,11 +35,11 @@ Positive and negative returns can cancel in a sum. Squaring prevents that and gi
 
 But absolute values also prevent cancellation. The more specific reason for squaring is its connection to variance: the expected squared distance from the mean.
 
-![Equation 2: \operatorname{Var}(r) = E((r-E(r))^2)](equations/part1_02.png)
+![Equation 2: \mathrm{Var}(r) = E((r-E(r))^2)](equations/part1_02.png)
 
 E means expectation, or the average under the probability distribution. Raw squared returns measure distance from zero, which gives the exact identity:
 
-![Equation 3: E(r^2) = \operatorname{Var}(r) + (E(r))^2](equations/part1_03.png)
+![Equation 3: E(r^2) = \mathrm{Var}(r) + (E(r))^2](equations/part1_03.png)
 
 So a squared return is not automatically a variance. Equating the expected squared return with variance requires a zero mean. Treating them as approximately equal when the mean is small is an approximation whose error is the squared mean.
 
