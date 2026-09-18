@@ -1,0 +1,55 @@
+{
+  "config": {
+    "train_end": "2019-12-31",
+    "evaluation_start": "2021-01-01",
+    "forecast_horizon": 5,
+    "simulation_paths": 20000,
+    "seed": 42,
+    "threshold_window": 252,
+    "high_risk_quantile": 0.8,
+    "high_risk_exposure": 0.5,
+    "normal_exposure": 1.0,
+    "baseline_window": 20,
+    "primary_cost_bps": 5,
+    "cost_scenarios_bps": [
+      0,
+      5,
+      10
+    ],
+    "cash_daily_return": 0.0,
+    "refit_schedule": "none; parameters frozen at training cutoff",
+    "execution": "signal after close t; rebalance close t+1; earns subsequent returns",
+    "terminal_position": "liquidate at final evaluation close, including costs"
+  },
+  "config_sha256": "d2cd44bea38702c011e8b15e5ed479d7057c20bac344e2dab90ddd71e8ff0e53",
+  "SPY_sha256": "070c06cce2c21f527e5ed439cf34c7455448e6553c19dad911452eb0ebd2aa93",
+  "training_returns": 6779,
+  "training_start": "1993-02-01",
+  "training_end": "2019-12-31",
+  "entry_date": "2021-01-04",
+  "first_earned_return_date": "2021-01-05",
+  "last_date": "2026-09-15",
+  "evaluation_return_intervals": 1430,
+  "threshold_calibration": "2020 forecasts; no portfolio evaluation in 2020",
+  "convergence_flag": 0,
+  "fit_warnings": [],
+  "median_relative_mc_se": 0.013029708323763206,
+  "versions": {
+    "python": "3.11.14",
+    "numpy": "2.4.6",
+    "pandas": "2.3.3",
+    "arch": "8.0.0",
+    "scipy": "1.17.1",
+    "exchange_calendars": "4.13.2"
+  },
+  "limitations": [
+    "Single historical out-of-sample pilot; not an untouched future evaluation after publication.",
+    "No parameter tuning on strategy results; GJR selected in the research plan.",
+    "Zero cash interest; taxes and market impact omitted; fixed proportional trading costs.",
+    "Divisible total-return SPY exposure, using adjusted-close return proxy.",
+    "One-close execution delay misses the first session of the forecast window.",
+    "Monte Carlo estimates have sampling error; SE excludes parameter and model uncertainty.",
+    "2020 crash excluded from portfolio evaluation; 2026 is a partial year.",
+    "Frozen input data is local; distribution remains unresolved."
+  ]
+}

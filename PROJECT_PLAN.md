@@ -1,6 +1,6 @@
 CURRENT SCOPE UPDATE — 2026-09-18
 
-The author requested a conclusion for each installment and a simple out-of-sample SPY/cash allocation experiment. Follow BACKTEST_PLAN.md for this narrow addition. It supersedes the original prohibition on all trading-strategy work; broader strategies and hedging remain deferred. Begin the downside-driven backtest in Part 2 after constructing valid forecasts, then apply the same protocol to subsequent models. Part 1's conclusion must state that economic value has not yet been tested.
+The author requested a conclusion for each installment and a simple out-of-sample SPY/cash allocation experiment. Follow BACKTEST_PLAN.md for this narrow addition. It supersedes the original prohibition on all trading-strategy work; broader strategies and hedging remain deferred. At the author’s subsequent request, include the first fixed-parameter out-of-sample allocation pilot in Part 1. It uses a 2019 fit, 2020 threshold warmup, and evaluation beginning at the first close of 2021. Part 2 will extend the forecast-target study. Conclusions must distinguish this single historical pilot from evidence of robust economic value.
 
 The original guide follows for context.
 

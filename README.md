@@ -6,7 +6,7 @@ Can information available today predict unusually high downside volatility in th
 
 ## Current status
 
-Part 1 has been worked through: data checks, return calculations, four model fits, and controlled shock-response comparisons. The notebook includes saved outputs. These are training-sample results, not out-of-sample forecast or economic-value evidence. Parts 2–7 are not implemented.
+Part 1 has been worked through: data checks, return calculations, four model fits, and controlled shock-response comparisons. The notebook includes saved outputs. A final supplement now runs a fixed-parameter GJR downside-forecast SPY/cash backtest, evaluated from January 2021 through September 2026 after a 2020 threshold warmup. It shows a return/risk tradeoff, not proven model superiority. Parts 2–7 are not implemented.
 
 Read [Part 1: How GARCH Models Volatility: Shocks, Persistence, and Asymmetry](article/01_garch_foundations.md), browse the [seven-part article guide](article/SERIES.md), or open the [notebook](notebooks/01_garch_foundations.ipynb).
 
@@ -123,4 +123,12 @@ Open `article/01_garch_foundations.html` locally, or use the Markdown version on
 
 ## Economic-value extension
 
-The series will include a simple SPY/cash allocation backtest beginning in Part 2, alongside forecast evaluation. See [BACKTEST_PLAN.md](BACKTEST_PLAN.md) for proposed rules and the chronological evaluation design. No strategy backtest has been implemented or evaluated yet; Part 1 remains a study of fitted model behavior.
+Notebook 01 now includes the requested SPY/cash pilot. See [BACKTEST_PLAN.md](BACKTEST_PLAN.md) for the fixed rules, information timing, and results. Reproduce it using the original local data snapshot:
+
+```sh
+python scripts/run_backtest.py
+```
+
+The script checks SPY against the committed reference checksum and stops on mismatch. It saves dated forecasts, signals, portfolio accounting, all three cost scenarios, metadata, and the performance chart under `results/backtest/`. The entry date is 2021-01-04; the first earned return ends 2021-01-05. Cash earns zero and the primary cost is 5 basis points per traded dollar. The saved results can be read without downloading data; rerunning requires the matching snapshot.
+
+At the primary cost, GJR earns 12.87% annualized with a 19.66% maximum drawdown; buy-and-hold earns 14.94% with a 24.50% drawdown. This pilot does not establish a forecasting or investment-performance advantage.

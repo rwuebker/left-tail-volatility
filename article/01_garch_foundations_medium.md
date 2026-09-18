@@ -146,7 +146,7 @@ This snippet assumes `returns` still includes the first undefined return from th
 
 ## What did we actually fit?
 
-All four models use the same **6,779 training returns**, from February 1, 1993 through December 31, 2019. We reserve **1,684 later returns**, from January 2, 2020 through September 15, 2026. We have inspected data coverage, but have not evaluated forecast performance on that later period.
+All four models use the same **6,779 training returns**, from February 1, 1993 through December 31, 2019. We reserve **1,684 later returns**, from January 2, 2020 through September 15, 2026. The foundation fits exclude that later period. The notebook’s allocation supplement uses 2020 for threshold warmup and evaluates the portfolio from the January 4, 2021 close onward.
 
 ![Four training fits: parameter counts, persistence, and in-sample AIC. Values are available as text in the canonical GitHub article.](figures/part1_model_comparison.png)
 
@@ -176,9 +176,13 @@ This downside realized variance is a zero-threshold squared-loss measure. Positi
 
 Adding asymmetry to GARCH does not automatically turn its total-variance forecast into this downside forecast. Part 2 will work through that relationship, define the target carefully, and begin walk-forward evaluation: predicting using only information available at each forecast date.
 
-We will also ask a practical question: would an investor holding SPY have benefited from reducing exposure when predicted downside risk was high? Starting in Part 2, we will compare a simple SPY/cash rule with buy-and-hold and simpler allocation baselines, using forecasts produced from information available at each date and accounting for delayed execution and trading costs.
+The notebook now includes a first practical test: hold 100% SPY normally and reduce to 50% when the five-session downside forecast exceeds the 80th percentile of its previous 252 forecasts. These are **heuristics**, meaning practical experimental choices rather than proven optimal values. Forecasts average 20,000 simulated GJR-t return paths, retaining the fitted mean; this is a Monte Carlo approximation, not an assumption that downside variance is half of total variance.
 
-There are no strategy results in Part 1. A smaller drawdown alone would not establish useful timing: holding less SPY can reduce losses while also sacrificing gains. The next experiments need to show both sides of that tradeoff.
+Parameters are frozen at the 2019 fit. Forecasts from 2020 calibrate the threshold; the portfolio enters at the January 4, 2021 close and is evaluated through September 15, 2026. Signals execute at the following close, cash earns zero, and entry, rebalancing, and liquidation cost 5 basis points per traded dollar. The 2020 crash is outside this evaluation.
+
+GJR earned **12.87% annualized**, compared with **14.94%** for buy-and-hold. Its maximum drawdown was **19.66%**, versus **24.50%**, with average SPY exposure of **89.65%**. A simpler historical-downside rule earned **13.36%** with a **20.15%** drawdown at almost the same exposure. The notebook shows wealth paths, annual outcomes, and the prespecified cost sensitivity.
+
+This is a return/risk tradeoff, not a demonstrated advantage for GJR. Holding less SPY sacrifices gains as well as reducing losses, and the historical rule earned more with less trading. Cash-rate assumptions, simulation error, and parameter uncertainty remain limitations. Now that these outcomes are visible, changing the rules in response would make another test on the same dates exploratory rather than untouched.
 
 ## Run the accompanying work
 

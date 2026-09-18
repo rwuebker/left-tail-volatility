@@ -1,0 +1,18 @@
+{
+  "train_end": "2019-12-31",
+  "evaluation_start": "2021-01-01",
+  "forecast_horizon": 5,
+  "simulation_paths": 20000,
+  "seed": 42,
+  "threshold_window": 252,
+  "high_risk_quantile": 0.8,
+  "high_risk_exposure": 0.5,
+  "normal_exposure": 1.0,
+  "baseline_window": 20,
+  "primary_cost_bps": 5,
+  "cost_scenarios_bps": [0, 5, 10],
+  "cash_daily_return": 0.0,
+  "refit_schedule": "none; parameters frozen at training cutoff",
+  "execution": "signal after close t; rebalance close t+1; earns subsequent returns",
+  "terminal_position": "liquidate at final evaluation close, including costs"
+}

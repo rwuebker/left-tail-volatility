@@ -16,9 +16,9 @@ Each published installment will link to this guide, its notebook, and its availa
 
 ## Conclusions and economic value
 
-Each installment ends with what the experiment establishes, its limitations, and the next question. Starting in Part 2, conclusions also report a common out-of-sample SPY/cash allocation experiment when valid forecasts are available. The question is whether reducing exposure during predicted high downside risk improves outcomes after costs. Part 1 has no strategy performance result yet.
+Each installment ends with what the experiment establishes, its limitations, and the next question. A Part 1 supplement now reports the first out-of-sample SPY/cash allocation pilot; subsequent parts will extend the comparison when their forecasts are available. The question is whether reducing exposure during predicted high downside risk improves outcomes after costs. The Part 1 pilot reduces drawdown but earns less than buy-and-hold and the historical-risk rule.
 
-See [the backtest protocol](../BACKTEST_PLAN.md) for proposed rules, comparisons, timing, and safeguards against using test results to tune later models.
+See [the backtest protocol](../BACKTEST_PLAN.md) for the recorded rules, comparisons, timing, and safeguards against using test results to tune later models.
 
 ## Article formats
 
