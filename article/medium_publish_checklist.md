@@ -10,7 +10,7 @@
 
 ## Transfer to Medium
 
-- [ ] Create a Medium draft titled **What does GARCH actually learn about volatility?** with subtitle **Predicting the Left Tail · Part 1 of 7**.
+- [ ] Create a Medium draft titled **How GARCH Models Volatility: Shocks, Persistence, and Asymmetry** with subtitle **Predicting the Left Tail · Part 1 of 7**.
 - [ ] Copy the text from `01_garch_foundations_medium.md` section by section. This is an upload guide, not a guarantee of automatic Markdown import.
 - [ ] Format headings and short code snippets using Medium's editor. Preserve indentation and plain-text code, including `fill_method=None` and the training cutoff.
 - [ ] Upload `equations/part1_01.png` through `equations/part1_15.png` at their matching image markers. The canonical Markdown retains the editable LaTeX. Use the surrounding explanation and equation alt text to provide an accessible text equivalent.

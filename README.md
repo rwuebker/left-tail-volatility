@@ -8,7 +8,7 @@ Can information available today predict unusually high downside volatility in th
 
 Part 1 has been worked through: data checks, return calculations, four model fits, and controlled shock-response comparisons. The notebook includes saved outputs. These are training-sample results, not out-of-sample forecast or economic-value evidence. Parts 2–7 are not implemented.
 
-Read [Part 1: What does GARCH actually learn about volatility?](article/01_garch_foundations.md), browse the [seven-part article guide](article/SERIES.md), or open the [notebook](notebooks/01_garch_foundations.ipynb).
+Read [Part 1: How GARCH Models Volatility: Shocks, Persistence, and Asymmetry](article/01_garch_foundations.md), browse the [seven-part article guide](article/SERIES.md), or open the [notebook](notebooks/01_garch_foundations.ipynb).
 
 The repository contains code, reference estimates, and data-source checksums. Raw downloads are excluded. Exact-input reproduction from a fresh checkout remains pending the frozen-data distribution workflow described below.
 

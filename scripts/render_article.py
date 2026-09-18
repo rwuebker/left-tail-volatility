@@ -70,7 +70,7 @@ def main():
     markdown = mistune.create_markdown(escape=True, plugins=['table'])
     html = '''<!doctype html><html lang="en"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>What does GARCH actually learn about volatility?</title>
+<title>How GARCH Models Volatility: Shocks, Persistence, and Asymmetry</title>
 <style>body{max-width:800px;margin:60px auto;padding:0 24px;font:19px/1.65 Georgia,serif;color:#202a32;background:#fff}h1,h2{line-height:1.2;font-family:system-ui,sans-serif}h1{font-size:42px}h2{margin-top:2em;font-size:27px}img{max-width:100%;height:auto}img[alt^="Equation"]{max-height:85px;object-fit:contain;object-position:left}pre{padding:18px;background:#f3f5f7;overflow-x:auto;font-size:14px;line-height:1.5}code{font-size:.85em}table{border-collapse:collapse;font:14px/1.5 system-ui,sans-serif;width:100%}td,th{padding:10px;border-bottom:1px solid #ddd;text-align:left}a{color:#176d77}em{color:#4d5b65}</style><main>'''
     html += markdown(preview) + '</main></html>\n'
     (article / '01_garch_foundations.html').write_text(html)

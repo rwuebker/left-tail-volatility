@@ -4,7 +4,7 @@ Can GARCH and machine learning warn us about downside risk?
 
 Seven articles accompany seven notebooks. Only Part 1 is drafted; later titles describe planned experiments, not established results. Medium URLs will be added after publication.
 
-1. [What does GARCH actually learn about volatility?](01_garch_foundations.md) — [Notebook 01](../notebooks/01_garch_foundations.ipynb).
+1. [How GARCH Models Volatility: Shocks, Persistence, and Asymmetry](01_garch_foundations.md) — [Notebook 01](../notebooks/01_garch_foundations.ipynb).
 2. Defining and forecasting downside risk — planned.
 3. Can machine learning improve the forecast? — planned.
 4. Can an LSTM learn from this much data? — planned.

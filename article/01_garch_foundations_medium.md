@@ -1,4 +1,4 @@
-# What does GARCH actually learn about volatility?
+# How GARCH Models Volatility: Shocks, Persistence, and Asymmetry
 
 *Predicting the Left Tail · Part 1 of 7*
 
